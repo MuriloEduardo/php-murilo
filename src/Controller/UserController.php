@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,12 +24,7 @@ class UserController extends AbstractController
     #[Route('/user/{user}', methods: 'GET')]
     public function show(User $user): JsonResponse
     {
-        $content = $user->getName();
-
-        $response = new Response();
-        $response->setContent($user);
-
-        return $this->json($content);
+        return $this->json($user);
     }
 
     #[Route('/user', methods: 'POST')]
