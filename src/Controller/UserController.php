@@ -49,4 +49,25 @@ class UserController extends AbstractController
  
         return $response;
     }
+
+    #[Route('/user/{user}', methods: 'PUT')]
+    public function update(User $user, Request $request, UserRepository $userRepository): Response
+    {
+        $content = $request->toArray();
+        
+        $user->setName($content['name']);
+        $user->setEmail($content['email']);
+
+        $birthDate = new DateTime($content['birth_date']);
+        $user->setBirthDate($birthDate);
+
+        $user->setUpdatedAt(new \DateTimeImmutable());
+
+        $userRepository->add($user, true);
+
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_NO_CONTENT);
+
+        return $response;
+    }
 }
