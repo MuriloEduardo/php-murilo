@@ -1,0 +1,151 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server User/Telephone server to apply PHP test from company"
+  version: "0.0.0"
+  title: "Php Murilo"
+  contact:
+    email: "murilosantoseduardo@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "127.0.0.1:8000"
+tags:
+- name: "User"
+  description: "Everything about Users"
+- name: "Telephone"
+  description: "Access to Users Telephones"
+schemes:
+- "https"
+- "http"
+paths:
+  /user:
+    post:
+      tags:
+      - "User"
+      summary: "Create an User"
+      description: "Create an User"
+      operationId: "createUser"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created an user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        201:
+          description: "Create user successful"
+    get:
+      tags:
+      - "User"
+      summary: "List of users"
+      description: ""
+      operationId: "listUsers"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Search by name of user"
+        type: "string"
+      - name: "email"
+        in: "query"
+        description: "Search by email of user"
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+  /user/{user}:
+    get:
+      tags:
+      - "User"
+      summary: "Get an User"
+      description: "Get an User"
+      operationId: "getOneUser"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "The user ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "List successful"
+          schema:
+            $ref: "#/definitions/User"
+    put:
+      tags:
+      - "User"
+      summary: "Update an User"
+      description: "Update an User"
+      operationId: "updateUser"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "The user ID"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Update user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "204":
+          description: "Update successful"
+  /user/{user}/telephone:
+    post:
+      tags:
+      - "Telephone"
+      summary: "Create a Telephone of an User"
+      description: "Create a Telephone of an User"
+      operationId: "createTelephoneUser"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "The user ID"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created telephone of an user object"
+        required: true
+        schema:
+          $ref: "#/definitions/Telephone"
+      responses:
+        200:
+          description: "Telephone create successful"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      birth_date:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+  Telephone:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      ddd:
+        type: "string"
+      number:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
