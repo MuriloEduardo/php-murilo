@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserController extends AbstractController
 {
@@ -31,13 +32,21 @@ class UserController extends AbstractController
 
         $users = $userRepository->findBy($criteria);
 
-        return $this->json($users);
+        return $this->json($users, Response::HTTP_OK, [], [
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object) {
+                return $object->getName();
+            }
+        ]);
     }
 
     #[Route('/user/{user}', methods: 'GET')]
     public function show(User $user): JsonResponse
     {
-        return $this->json($user);
+        return $this->json($user, Response::HTTP_OK, [], [
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object) {
+                return $object->getName();
+            }
+        ]);
     }
 
     #[Route('/user', methods: 'POST')]
