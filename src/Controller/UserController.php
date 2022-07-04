@@ -14,9 +14,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/user', methods: 'GET')]
-    public function index(UserRepository $userRepository): JsonResponse
+    public function index(Request $request, UserRepository $userRepository): JsonResponse
     {
-        $users = $userRepository->findAll();
+        $name = $request->query->get('name');
+        $email = $request->query->get('email');
+
+        $criteria = [];
+
+        if (!empty($name)) {
+            $criteria['name'] = $name;
+        }
+
+        if (!empty($email)) {
+            $criteria['email'] = $email;
+        }
+
+        $users = $userRepository->findBy($criteria);
 
         return $this->json($users);
     }
